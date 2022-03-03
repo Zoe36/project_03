@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.2并3.3</title>
+    <style>
+        textarea {
+            margin-left: 43px;
+            resize: none;
+        }
+        
+        ul {
+            margin-top: 50px;
+        }
+        
+        li {
+            width: 300px;
+            padding: 5px;
+            background-color: rgb(245, 209, 243);
+            color: red;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        
+        li a {
+            float: right;
+        }
+        /*   <!-- 3.tab动态生成表格 --> */
+        
+        table {
+            margin: 100px auto;
+            width: 500px;
+            text-align: center;
+            border-collapse: collapse;
+            /* bc防止表格表框空隙 */
+        }
+        
+        thead tr th {
+            background-color: #ccc;
+            height: 40px;
+        }
+        
+        th,
+        td {
+            border: 1px solid #000;
+        }
+        /* 4 */
+        
+        img {
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <!--1. 删除节点 -->
+    <!-- <button>删除</button>
+    <ul>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+    </ul> -->
+
+    <!-- 2. 发布留言并可删除 -->
+    <textarea name="" id=""></textarea>
+    <button>发布</button>
+
+    <ul>
+
+    </ul>
+
+
+    <!-- 3.tab动态生成表格 -->
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>科目</th>
+                <th>成绩</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <!-- 4.鼠标天使 -->
+    <img src="images/angel.gif" alt="">
+    <script>
+        // 1.获取元素
+        // var btn = document.querySelector('button');
+        // // var lili = document.querySelectorAll('li'); 错误，因为删除节点是通过获取父节点来影响子节点
+        // var ul = document.querySelector('ul');
+        // // //2.注册事件 点击删除，每删除一次，3一个li
+        // // btn.onclick = function() {
+        // //         //删除节点 node.removechild(child[]); 删除的是li,那获取的是父亲是ul 注意驼峰命名和children输写
+        // //         ul.removeChild(ul.children[0]);
+
+        // //     }
+        // //3.注册事件 点击删除，每删除一次，3一个li并且再删除所有的li后，禁用删除键disabled：true 注意禁用单词的ed
+        // btn.onclick = function() {
+        //     if (ul.children.length == 0) {
+        //         btn.disabled = true;
+        //     } else {
+        //         //删除节点 node.removechild(child[]); 删除的是li,那获取的是父亲是ul 注意驼峰命名和children输写
+        //         ul.removeChild(ul.children[0]);
+        //     }
+
+        // }
+
+
+
+        // 2. 发布留言并可删除（ 1） 
+        //获取元素 button ui textarea发布框
+        var text = document.querySelector('textarea')
+        var btn = document.querySelector('button');
+        var ul = document.querySelector('ul');
+        //(2)注册事件 点击鼠标，发布
+        btn.onclick = function() {
+            //创建元素
+            var li = document.createElement('li');
+            li.innerHTML = text.value + "<a href='javascript:;'>删除</a>";
+            //添加元素
+            ul.insertBefore(li, ul.children[0]);
+            //删除元素，点击链接a, 删除的是它的父亲li
+            var as = document.querySelectorAll('a');
+            for (var i = 0; i < as.length; i++) {
+                as[i].onclick = function() {
+                    ul.removeChild(this.parentNode); //  ul.removeChild(this.parentNode);
+                }
+            }
+
+        }
+
+
+        //3.tab动态生成表格
+        //（1）js动态生成学员数据，现用对象dates形式存储，并用数组[]来包装4个人的数据
+        var datas = [{
+            name: '张三',
+            subject: 'Javascript',
+            score: 100
+        }, {
+            name: '李四',
+            subject: 'Javascript',
+            score: 99
+        }, {
+            name: '赵能',
+            subject: 'Javascript',
+            score: 98
+        }, {
+            name: '李大脚',
+            subject: 'Javascript',
+            score: 97
+        }];
+
+        //(2)往tbody创建行， 行数跟随人数创建(即数组的长度=datas.length)
+        var tbody = document.querySelector('tbody');
+        //建立表格通过双重for循环，外层循环控制tr行数；内层循环控制tb单元格数
+        for (var i = 0; i < datas.length; i++) { //外层循环管行 tr
+            //1.创建tr行数,增加tr元素
+            var tr = document.createElement('tr');
+            tbody.appendChild(tr);
+            //创建行内单元格（其格数取决于每个对象数据的属性个性） 属性个数通过for遍历对象for(var k in i)获取,属性值公式= datas[i][k]
+            for (var k in datas[i]) { //内层管列 td
+                //2.创建单元格 ，增加单元格
+                var td = document.createElement('td');
+                //此时tb还未含有属性个数 需赋值 把对象里面的属性值 datas[i][k] 给 td 
+                td.innerHTML = datas[i][k];
+                // console.log(datas[i][k]); 待试验
+                tr.appendChild(td);
+
+            }
+            //3.创建有删除2字的单元格
+            var td = document.createElement('td');
+            //赋值td文字
+            td.innerHTML = '<a href="javascript:;">删除 </a>';
+            //增加元素
+            tr.appendChild(td);
+
+        }
+        //4.删除所有操作 
+        var as = document.querySelectorAll('a');
+
+        for (var i = 0; i < as.length; i++) {
+            as[i].onclick = function() {
+                //删除节点 node.removeChild(child); 
+                //总结：在该案例，node是指实际删除本身tr行的父级；  
+                //(child)是指实际删除本身tr行与该调用函数者as是什么关系
+                // tbody.removeChild(tbody.children[0]);
+                //tbody.children[0]与老师的不一样，更方便,但有bug.这个无论点击第几个，都只会从第一行开始删除
+                tbody.removeChild(this.parentNode.parentNode) //与第二个案例删除键冲撞
+            }
+        }
+
+        // for(var k in obj) {
+        //     k 得到的是属性名
+        //     obj[k] 得到是属性值
+        // }
+
+
+        //4.鼠标天使
+        var pic = document.querySelector('img');
+        //在页面移动，那就是给document注册事件
+        document.addEventListener('mousemove', function(e) {
+            //  2.核心原理： 每次鼠标移动，我们都会获得最新的鼠标坐标， 把这个x和y坐标做为图片的top和left 值就可以移动图片 页面坐标赋值给x,y;var x = e.pageX; var y = e.pageY;
+            var x = e.pageX;
+            var y = e.pageY;
+            //再把x,y值赋予图片的top,和left值
+            pic.style.top = y - 40 + 'px';
+            pic.style.left = x - 50 + 'px';
+
+        });
+    </script>
+</body>
+
+</html>

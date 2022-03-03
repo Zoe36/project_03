@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3月2号</title>
+    <style>
+        /* 练习一 */
+        
+        textarea {
+            margin-left: 43px;
+            resize: none;
+        }
+        
+        ul {
+            margin-top: 50px;
+        }
+        
+        li {
+            width: 300px;
+            padding: 5px;
+            background-color: rgb(245, 209, 243);
+            color: red;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1.留言板发布 -->
+    <textarea name="" id=""></textarea>
+    <button>发布</button>
+    <ul>
+
+    </ul>
+
+
+    <script>
+        //1.获取元素
+        var btn = document.querySelector('button');
+        var text = document.querySelector('textarea');
+        var ul = document.querySelector('ul');
+        //2.注册事件 事件源 事件类型 
+        btn.onclick = function() {
+            //1.创建元素 评论li
+            var li = document.createElement('li');
+            //先赋值给小li
+            li.innerHTML = text.value;
+            //2.添加元素 node.insertBefore(child,指定哪个元素);
+            ul.insertBefore(li, ul.children[0]);
+
+        }
+    </script>
+</body>
+
+</html>
